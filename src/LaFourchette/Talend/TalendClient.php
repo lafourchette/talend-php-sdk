@@ -39,22 +39,6 @@ class TalendClient extends Client
     }
 
     /**
-     * Returns a Response object
-     *
-     * @param Guzzle\Http\Message\Request $request
-     *
-     * @return array|Guzzle\Http\Message\Response
-     */
-    protected function doRequest(Request $request)
-    {
-        try {
-            return $request->send();
-        } catch (ClientErrorResponseException $e) {
-            return $e->getResponse();
-        }
-    }
-
-    /**
      * @param int $taskId
      *
      * @return array|Guzzle\Http\Message\Response
@@ -95,5 +79,21 @@ class TalendClient extends Client
     public function getJsonEncoded($param)
     {
         return base64_encode(json_encode($param));
+    }
+
+    /**
+     * Returns a Response object
+     *
+     * @param Guzzle\Http\Message\Request $request
+     *
+     * @return array|Guzzle\Http\Message\Response
+     */
+    private function doRequest(Request $request)
+    {
+        try {
+            return $request->send();
+        } catch (ClientErrorResponseException $e) {
+            return $e->getResponse();
+        }
     }
 }
