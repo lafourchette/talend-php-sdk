@@ -97,7 +97,7 @@ class TalendClient extends Client
      */
     public function getContent(Response $response)
     {
-        return json_decode($response->getBody(true));
+        return json_decode($response->getBody(true), true);
     }
 
     /**

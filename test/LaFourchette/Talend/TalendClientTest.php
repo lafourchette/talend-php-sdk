@@ -62,7 +62,7 @@ BODY
         $this->assertCount(1, $requests);
         $request = reset($requests);
 
-        $this->assertEquals(0, $return->returnCode);
+        $this->assertEquals(0, $return['returnCode']);
         $this->assertEquals(
             'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6ImFzeW5jaHJvbm91cyJ9',
             $request->getUrl()
@@ -101,7 +101,7 @@ BODY
         $this->assertCount(1, $requests);
         $request = reset($requests);
 
-        $this->assertEquals(0, $return->returnCode);
+        $this->assertEquals(0, $return['returnCode']);
         $this->assertEquals(
             'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6ImFzeW5jaHJvbm91cyIsImNvbnRleHQiOnsiaWRzIjoiMSwyLDMifX0=',
             $request->getUrl()
@@ -140,7 +140,7 @@ BODY
         $this->assertCount(1, $requests);
         $request = reset($requests);
 
-        $this->assertEquals(0, $return->returnCode);
+        $this->assertEquals(0, $return['returnCode']);
         $this->assertEquals(
             'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6ImFzeW5jaHJvbm91cyJ9',
             $request->getUrl()
@@ -178,7 +178,7 @@ BODY
         $this->assertCount(1, $requests);
         $request = reset($requests);
 
-        $this->assertEquals(0, $return->returnCode);
+        $this->assertEquals(0, $return['returnCode']);
         $this->assertEquals(
             'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6ImFzeW5jaHJvbm91cyIsImNvbnRleHQiOnsiaWRzIjoiMSwyLDMsNCJ9fQ=%3D',
             $request->getUrl()
@@ -214,7 +214,7 @@ BODY
         $this->assertCount(1, $requests);
         $request = reset($requests);
 
-        $this->assertEquals(0, $return->returnCode);
+        $this->assertEquals(0, $return['returnCode']);
 
         $this->assertEquals(
             'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoibGlzdFRhc2tzIiwiYXV0aFBhc3MiOiJwYXNzd29yZCIsImF1dGhVc2VyIjoibG9naW4iLCJtb2RlIjoic3luY2hyb25vdXMifQ=%3D',
@@ -222,9 +222,9 @@ BODY
         );
 
         $taskLabels = array();
-        if (!empty($return->result)) {
-            foreach ($return->result as $task) {
-                $taskLabels[] = $task->label;
+        if (!empty($return['result'])) {
+            foreach ($return['result'] as $task) {
+                $taskLabels[] = $task['label'];
             }
         }
 
