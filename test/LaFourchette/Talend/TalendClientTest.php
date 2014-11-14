@@ -2,7 +2,6 @@
 namespace test\LaFourchette\Talend;
 
 use LaFourchette\Talend\TalendClient;
-use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
 use Guzzle\Plugin\Mock\MockPlugin;
 use Guzzle\Tests\GuzzleTestCase;
@@ -56,14 +55,13 @@ class TalendClientTest extends GuzzleTestCase
 }
 BODY
         ));
-        $response = $this->client->runTask(17);
+        $return = $this->client->runTask(17);
 
         $requests = $this->mock->getReceivedRequests();
 
         $this->assertCount(1, $requests);
         $request = reset($requests);
 
-        $return = json_decode($response->getBody(true));
         $this->assertEquals(0, $return->returnCode);
         $this->assertEquals(
             'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6ImFzeW5jaHJvbm91cyJ9',
@@ -96,14 +94,13 @@ BODY
 }
 BODY
         ));
-        $response = $this->client->runTask(17);
+        $return = $this->client->runTask(17);
 
         $requests = $this->mock->getReceivedRequests();
 
         $this->assertCount(1, $requests);
         $request = reset($requests);
 
-        $return = json_decode($response->getBody(true));
         $this->assertEquals(0, $return->returnCode);
         $this->assertEquals(
             'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6ImFzeW5jaHJvbm91cyIsImNvbnRleHQiOnsiaWRzIjoiMSwyLDMifX0=',
@@ -136,14 +133,13 @@ BODY
 }
 BODY
         ));
-        $response = $this->client->runTask(17);
+        $return = $this->client->runTask(17);
 
         $requests = $this->mock->getReceivedRequests();
 
         $this->assertCount(1, $requests);
         $request = reset($requests);
 
-        $return = json_decode($response->getBody(true));
         $this->assertEquals(0, $return->returnCode);
         $this->assertEquals(
             'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6ImFzeW5jaHJvbm91cyJ9',
@@ -175,14 +171,13 @@ BODY
 }
 BODY
         ));
-        $response = $this->client->runTask(17, array('ids' => '1,2,3,4'));
+        $return = $this->client->runTask(17, array('ids' => '1,2,3,4'));
 
         $requests = $this->mock->getReceivedRequests();
 
         $this->assertCount(1, $requests);
         $request = reset($requests);
 
-        $return = json_decode($response->getBody(true));
         $this->assertEquals(0, $return->returnCode);
         $this->assertEquals(
             'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6ImFzeW5jaHJvbm91cyIsImNvbnRleHQiOnsiaWRzIjoiMSwyLDMsNCJ9fQ=%3D',
@@ -212,8 +207,7 @@ BODY
 BODY
         ));
 
-        $response = $this->client->listTasks();
-        $return = json_decode($response->getBody(true));
+        $return = $this->client->listTasks();
 
         $requests = $this->mock->getReceivedRequests();
 

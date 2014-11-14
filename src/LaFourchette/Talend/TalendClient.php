@@ -62,7 +62,7 @@ class TalendClient extends Client
             $param['context'] = $context;
         }
 
-        return $this->doRequest($this->get('?'. $this->getJsonEncoded($param)));
+        return $this->getContent($this->doRequest($this->get('?'. $this->getJsonEncoded($param))));
     }
 
     /**
@@ -77,7 +77,7 @@ class TalendClient extends Client
             'mode'       => 'synchronous'
         );
 
-        return $this->doRequest($this->get('?'. $this->getJsonEncoded($param)));
+        return $this->getContent($this->doRequest($this->get('?'. $this->getJsonEncoded($param))));
     }
 
     /**
@@ -88,6 +88,16 @@ class TalendClient extends Client
     public function getJsonEncoded($param)
     {
         return base64_encode(json_encode($param));
+    }
+
+    /**
+     * @param Response $response
+     *
+     * @return mixed
+     */
+    public function getContent(Response $response)
+    {
+        return json_decode($response->getBody(true));
     }
 
     /**
