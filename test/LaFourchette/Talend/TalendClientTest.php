@@ -112,6 +112,85 @@ BODY
     }
 
     /**
+     * method : runTask
+     * case :  run the task with id=17 (job_label) and a context parameter equals null
+     */
+    public function testRunWithContextParameterTaskEqualsNull()
+    {
+        $this->client = TalendClient::factory(array(
+            'base_url'    => 'http://talend.url/org.talend.administrator/metaServlet',
+            'login'       => 'login',
+            'password'    => 'password',
+            'context'     => null
+        ));
+        $this->client->addSubscriber($this->mock);
+
+        $this->mock->addResponse(new Response(
+            200,
+            array(
+                'Content-Type' => 'application/json',
+            ),
+            <<<BODY
+{
+    "returnCode": 0
+}
+BODY
+        ));
+        $response = $this->client->runTask(17);
+
+        $requests = $this->mock->getReceivedRequests();
+
+        $this->assertCount(1, $requests);
+        $request = reset($requests);
+
+        $return = json_decode($response->getBody(true));
+        $this->assertEquals(0, $return->returnCode);
+        $this->assertEquals(
+            'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6ImFzeW5jaHJvbm91cyJ9',
+            $request->getUrl()
+        );
+    }
+
+    /**
+     * method : runTask
+     * case :  run the task with id=17 (job_label) and a context parameter equals null
+     */
+    public function testRunWithFunctionContextParameter()
+    {
+        $this->client = TalendClient::factory(array(
+            'base_url'    => 'http://talend.url/org.talend.administrator/metaServlet',
+            'login'       => 'login',
+            'password'    => 'password'
+        ));
+        $this->client->addSubscriber($this->mock);
+
+        $this->mock->addResponse(new Response(
+            200,
+            array(
+                'Content-Type' => 'application/json',
+            ),
+            <<<BODY
+{
+    "returnCode": 0
+}
+BODY
+        ));
+        $response = $this->client->runTask(17, array('ids' => '1,2,3,4'));
+
+        $requests = $this->mock->getReceivedRequests();
+
+        $this->assertCount(1, $requests);
+        $request = reset($requests);
+
+        $return = json_decode($response->getBody(true));
+        $this->assertEquals(0, $return->returnCode);
+        $this->assertEquals(
+            'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6ImFzeW5jaHJvbm91cyIsImNvbnRleHQiOnsiaWRzIjoiMSwyLDMsNCJ9fQ=%3D',
+            $request->getUrl()
+        );
+    }
+
+    /**
      * method : listTasks
      * case : search a task with a label job_label
      */

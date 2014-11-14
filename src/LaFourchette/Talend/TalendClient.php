@@ -39,11 +39,12 @@ class TalendClient extends Client
     }
 
     /**
-     * @param int $taskId
+     * @param int     $taskId
+     * @param array   $context
      *
      * @return array|Guzzle\Http\Message\Response
      */
-    public function runTask($taskId)
+    public function runTask($taskId, $context = array())
     {
         $param =  array(
             'actionName' => 'runTask',
@@ -54,7 +55,11 @@ class TalendClient extends Client
         );
 
         if ($this->getConfig('context') != '' && is_array($this->getConfig('context'))) {
-            $param['context'] = $this->getConfig('context');
+            $context = array_merge($this->getConfig('context'), $context);
+        }
+
+        if (!empty($context) && is_array($context)) {
+            $param['context'] = $context;
         }
 
         return $this->doRequest($this->get('?'. $this->getJsonEncoded($param)));
