@@ -72,6 +72,46 @@ BODY
     }
 
     /**
+     * method : runTask
+     * case :  run the task with id=17 (job_label) and a context parameter
+     */
+    public function testRunWithContextParameterTask()
+    {
+        $this->client = TalendClient::factory(array(
+            'base_url'    => 'http://talend.url/org.talend.administrator/metaServlet',
+            'login'       => 'login',
+            'password'    => 'password',
+            'context'     => array('ids' => '1,2,3')
+        ));
+        $this->client->addSubscriber($this->mock);
+
+        $this->mock->addResponse(new Response(
+            200,
+            array(
+                'Content-Type' => 'application/json',
+            ),
+            <<<BODY
+{
+    "returnCode": 0
+}
+BODY
+        ));
+        $response = $this->client->runTask(17);
+
+        $requests = $this->mock->getReceivedRequests();
+
+        $this->assertCount(1, $requests);
+        $request = reset($requests);
+
+        $return = json_decode($response->getBody(true));
+        $this->assertEquals(0, $return->returnCode);
+        $this->assertEquals(
+            'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6ImFzeW5jaHJvbm91cyIsImNvbnRleHQiOnsiaWRzIjoiMSwyLDMifX0=',
+            $request->getUrl()
+        );
+    }
+
+    /**
      * method : listTasks
      * case : search a task with a label job_label
      */

@@ -53,6 +53,10 @@ class TalendClient extends Client
             'mode'       => 'asynchronous'
         );
 
+        if ($this->getConfig('context') != '' && is_array($this->getConfig('context'))) {
+            $param['context'] = $this->getConfig('context');
+        }
+
         return $this->doRequest($this->get('?'. $this->getJsonEncoded($param)));
     }
 
