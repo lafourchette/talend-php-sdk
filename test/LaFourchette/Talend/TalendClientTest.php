@@ -232,7 +232,7 @@ BODY
         $this->assertTrue(array_search('job_label', $taskLabels) !== false);
     }
 
-    public function testTalendException()
+    public function testTalendApiException()
     {
         $this->setExpectedException('LaFourchette\Talend\Exception\TalendApiException');
         $this->mock->addResponse(new Response(
@@ -245,7 +245,29 @@ BODY
     "result": [{
         "label": "job_label"
     }],
-    "errorStatus": "JOB_ERROR",
+    "error": "Incorrect password",
+    "returnCode": 2
+}
+BODY
+        ));
+
+        $this->client->listTasks();
+    }
+
+    public function testTalendJobExecutionException()
+    {
+        $this->setExpectedException('LaFourchette\Talend\Exception\JobExecutionException');
+        $this->mock->addResponse(new Response(
+            200,
+            array(
+                'Content-Type' => 'application/json',
+            ),
+            <<<BODY
+{
+    "result": [{
+        "label": "job_label"
+    }],
+    "errorStatus": "KILLED",
     "returnCode": 0
 }
 BODY

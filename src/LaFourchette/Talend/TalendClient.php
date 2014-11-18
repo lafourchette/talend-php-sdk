@@ -7,6 +7,7 @@ use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
 use LaFourchette\Talend\Exception\TalendApiException;
+use LaFourchette\Talend\Exception\JobExecutionException;
 
 /**
  * Class TalendClient
@@ -100,12 +101,24 @@ class TalendClient extends Client
     public function getContent(Response $response)
     {
         $data = json_decode($response->getBody(true), true);
-        if (array_key_exists('errorStatus', $data)) {
-            throw new TalendApiException(sprintf('Api exception error: %s', $data['errorStatus']));
-        }
+        $this->generateException($data);
 
         return $data;
+    }
 
+    /**
+     * @param array $data
+     *
+     * @throws TalendApiException
+     * @throws JobExecutionException
+     */
+    private function generateException(array $data)
+    {
+        if (array_key_exists('error', $data) && 0 < $data['returnCode']) {
+            throw new TalendApiException('Api exception error: ' . $data['error']);
+        } elseif (array_key_exists('errorStatus', $data)) {
+            throw new JobExecutionException('Job execution exception error: ' . $data['errorStatus']);
+        }
     }
 
     /**
