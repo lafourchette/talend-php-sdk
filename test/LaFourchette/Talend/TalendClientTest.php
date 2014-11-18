@@ -55,16 +55,17 @@ class TalendClientTest extends GuzzleTestCase
 }
 BODY
         ));
+
         $return = $this->client->runTask(17);
 
         $requests = $this->mock->getReceivedRequests();
 
         $this->assertCount(1, $requests);
-        $request = reset($requests);
+        $request = $requests[0];
 
         $this->assertEquals(0, $return['returnCode']);
         $this->assertEquals(
-            'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6ImFzeW5jaHJvbm91cyJ9',
+            'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6InN5bmNocm9ub3VzIn0=',
             $request->getUrl()
         );
     }
@@ -81,6 +82,7 @@ BODY
             'password'    => 'password',
             'context'     => array('ids' => '1,2,3')
         ));
+
         $this->client->addSubscriber($this->mock);
 
         $this->mock->addResponse(new Response(
@@ -99,11 +101,10 @@ BODY
         $requests = $this->mock->getReceivedRequests();
 
         $this->assertCount(1, $requests);
-        $request = reset($requests);
-
+        $request = $requests[0];
         $this->assertEquals(0, $return['returnCode']);
         $this->assertEquals(
-            'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6ImFzeW5jaHJvbm91cyIsImNvbnRleHQiOnsiaWRzIjoiMSwyLDMifX0=',
+            'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6InN5bmNocm9ub3VzIiwiY29udGV4dCI6eyJpZHMiOiIxLDIsMyJ9fQ=%3D',
             $request->getUrl()
         );
     }
@@ -142,7 +143,7 @@ BODY
 
         $this->assertEquals(0, $return['returnCode']);
         $this->assertEquals(
-            'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6ImFzeW5jaHJvbm91cyJ9',
+            'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6InN5bmNocm9ub3VzIn0=',
             $request->getUrl()
         );
     }
@@ -180,7 +181,7 @@ BODY
 
         $this->assertEquals(0, $return['returnCode']);
         $this->assertEquals(
-            'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6ImFzeW5jaHJvbm91cyIsImNvbnRleHQiOnsiaWRzIjoiMSwyLDMsNCJ9fQ=%3D',
+            'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoicnVuVGFzayIsImF1dGhQYXNzIjoicGFzc3dvcmQiLCJhdXRoVXNlciI6ImxvZ2luIiwidGFza0lkIjoxNywibW9kZSI6InN5bmNocm9ub3VzIiwiY29udGV4dCI6eyJpZHMiOiIxLDIsMyw0In19',
             $request->getUrl()
         );
     }
@@ -229,5 +230,27 @@ BODY
         }
 
         $this->assertTrue(array_search('job_label', $taskLabels) !== false);
+    }
+
+    public function testTalendException()
+    {
+        $this->setExpectedException('LaFourchette\Talend\Exception\TalendApiException');
+        $this->mock->addResponse(new Response(
+            200,
+            array(
+                'Content-Type' => 'application/json',
+            ),
+            <<<BODY
+{
+    "result": [{
+        "label": "job_label"
+    }],
+    "errorStatus": "JOB_ERROR",
+    "returnCode": 0
+}
+BODY
+        ));
+
+        $this->client->listTasks();
     }
 }
