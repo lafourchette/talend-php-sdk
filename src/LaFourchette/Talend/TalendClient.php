@@ -6,6 +6,7 @@ use Guzzle\Service\Client;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
+use LaFourchette\Talend\Exception\TalendApiException;
 
 /**
  * Class TalendClient
@@ -14,6 +15,7 @@ use Guzzle\Http\Message\Response;
  */
 class TalendClient extends Client
 {
+
     /**
      * Basic factory method to create a new client. Extend this method in subclasses to build more complex clients.
      *
@@ -51,7 +53,7 @@ class TalendClient extends Client
             'authPass'   => $this->getConfig('password'),
             'authUser'   => $this->getConfig('login'),
             'taskId'     => $taskId,
-            'mode'       => 'asynchronous'
+            'mode'       => 'synchronous'
         );
 
         if ($this->getConfig('context') != '' && is_array($this->getConfig('context'))) {
@@ -93,11 +95,17 @@ class TalendClient extends Client
     /**
      * @param Response $response
      *
-     * @return mixed
+     * @return array
      */
     public function getContent(Response $response)
     {
-        return json_decode($response->getBody(true), true);
+        $data = json_decode($response->getBody(true), true);
+        if (array_key_exists('errorStatus', $data)) {
+            throw new TalendApiException(sprintf('Api exception error: %s', $data['errorStatus']));
+        }
+
+        return $data;
+
     }
 
     /**
