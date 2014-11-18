@@ -116,7 +116,7 @@ class TalendClient extends Client
     {
         if (array_key_exists('error', $data) && 0 < $data['returnCode']) {
             throw new TalendApiException('Api exception error: ' . $data['error']);
-        } elseif (array_key_exists('errorStatus', $data)) {
+        } elseif (array_key_exists('errorStatus', $data) && 'NO_ERROR' != $data['errorStatus']) {
             throw new JobExecutionException('Job execution exception error: ' . $data['errorStatus']);
         }
     }
