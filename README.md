@@ -1,4 +1,4 @@
-talend-php-sdk
+talend-php-sdk [![Build Status](https://travis-ci.org/lafourchette/talend-php-sdk.svg?branch=master)](https://travis-ci.org/lafourchette/talend-php-sdk)
 ==============
 
 Informations
