@@ -1,7 +1,7 @@
 talend-php-sdk
 ==============
 
-README
+Informations
 ======
 
 Client for Talend administrator server API
@@ -9,16 +9,13 @@ Client for Talend administrator server API
 Documentation Talend administrator server API :
 https://help.talend.com/display/TalendPlatformUniversalStudioUserGuide54EN/G.3.4+Configuring+the+components
 
-runTask with a context parameter :
+`runTask` with a context parameter :
 https://help.talend.com/display/TalendAdministrationCenterUserGuide54EN/B.5.2+Executing+a+task+with+context+parameters+using+metaServlet
-
-Documentation Confluence :
-https://confluence.lafourchette.com/display/LAB/Webservice+et+MetaServlet
 
 Example :
 ---------
 
-1) method runTask
+1) Method runTask
 ```php
 <?php
 use LaFourchette\Talend\TalendClient;
@@ -31,7 +28,7 @@ $client = TalendClient::factory(array(
 
 $client->runTask(17);
 ```
-method runTask with a context parameter
+Method runTask with a context parameter
 
 
 ```php
@@ -48,7 +45,7 @@ $client = TalendClient::factory(array(
 $client->runTask(17);
 ```
 
-2) method listTasks
+2) Method listTasks
 ```php
 use LaFourchette\Talend\TalendClient;
 
