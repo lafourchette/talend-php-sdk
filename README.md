@@ -1,4 +1,4 @@
-talend-php-sdk [![Build Status](https://travis-ci.org/lafourchette/talend-php-sdk.svg?branch=master)](https://travis-ci.org/lafourchette/talend-php-sdk)
+talend-php-sdk [![Build Status](https://travis-ci.org/lafourchette/talend-php-sdk.svg?branch=master)](https://travis-ci.org/lafourchette/talend-php-sdk) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/lafourchette/talend-php-sdk/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/lafourchette/talend-php-sdk/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/lafourchette/talend-php-sdk/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/lafourchette/talend-php-sdk/?branch=master)
 ==============
 
 Informations
