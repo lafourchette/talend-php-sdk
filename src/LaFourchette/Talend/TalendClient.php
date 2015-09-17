@@ -112,8 +112,12 @@ class TalendClient extends Client
      * @throws TalendApiException
      * @throws JobExecutionException
      */
-    private function generateException(array $data)
+    private function generateException($data)
     {
+        if (is_null($data)) {
+            throw new TalendApiException('Api exception error: no returned data');
+        }
+
         if (array_key_exists('error', $data) && 0 < $data['returnCode']) {
             throw new TalendApiException('Api exception error: ' . $data['error']);
         } elseif (array_key_exists('errorStatus', $data) && 'NO_ERROR' != $data['errorStatus']) {
