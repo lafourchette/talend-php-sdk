@@ -232,6 +232,20 @@ BODY
         $this->assertTrue(array_search('job_label', $taskLabels) !== false);
     }
 
+    public function testTalendApiExceptionDataIsNull()
+    {
+        $this->setExpectedException('LaFourchette\Talend\Exception\TalendApiException');
+        $this->mock->addResponse(new Response(
+            200,
+            array(
+                'Content-Type' => 'application/json',
+            ),
+            null
+        ));
+
+        $this->client->listTasks();
+    }
+
     public function testTalendApiException()
     {
         $this->setExpectedException('LaFourchette\Talend\Exception\TalendApiException');
