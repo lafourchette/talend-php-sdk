@@ -100,7 +100,14 @@ class TalendClient extends Client
      */
     public function getContent(Response $response)
     {
-        $data = json_decode($response->getBody(true), true);
+        $body = $response->getBody(true);
+        $data = json_decode($body, true);
+
+        if (json_last_error() === JSON_ERROR_UTF8) {
+            $body= utf8_encode($body);
+            $data = json_decode($body, true);
+        }
+
         $this->generateException($data);
 
         return $data;

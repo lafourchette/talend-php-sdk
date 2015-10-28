@@ -232,6 +232,52 @@ BODY
         $this->assertTrue(array_search('job_label', $taskLabels) !== false);
     }
 
+    /**
+     * method : listTasks
+     * case : search a task with a label job_label
+     */
+    public function testListTasksWithNonUtf8Response()
+    {
+
+        $this->mock->addResponse(new Response(
+            200,
+            array(
+                'Content-Type' => 'application/json',
+            ),
+            utf8_decode(<<<BODY
+{
+    "result": [{
+        "label": "àéèjob_label"
+    }],
+    "returnCode": 0
+}
+BODY
+        )));
+
+        $return = $this->client->listTasks();
+
+        $requests = $this->mock->getReceivedRequests();
+
+        $this->assertCount(1, $requests);
+        $request = reset($requests);
+
+        $this->assertEquals(0, $return['returnCode']);
+
+        $this->assertEquals(
+            'http://talend.url/org.talend.administrator/metaServlet?eyJhY3Rpb25OYW1lIjoibGlzdFRhc2tzIiwiYXV0aFBhc3MiOiJwYXNzd29yZCIsImF1dGhVc2VyIjoibG9naW4iLCJtb2RlIjoic3luY2hyb25vdXMifQ=%3D',
+            $request->getUrl()
+        );
+
+        $taskLabels = array();
+        if (!empty($return['result'])) {
+            foreach ($return['result'] as $task) {
+                $taskLabels[] = $task['label'];
+            }
+        }
+
+        $this->assertTrue(array_search('àéèjob_label', $taskLabels) !== false);
+    }
+
     public function testTalendApiExceptionDataIsNull()
     {
         $this->setExpectedException('LaFourchette\Talend\Exception\TalendApiException');
